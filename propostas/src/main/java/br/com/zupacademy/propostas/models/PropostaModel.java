@@ -19,8 +19,6 @@ public class PropostaModel {
     /**
      * O documento necessário deve ser o CPF/CNPJ
      */
-
-    @Column(unique = true)
     @NotBlank
     private String documento;
 
