@@ -37,6 +37,10 @@ public class PropostaRequest {
         this.salarioBruto = salarioBruto;
     }
 
+    public String getDocumento() {
+        return documento;
+    }
+
     public PropostaModel toModel() {
         return new PropostaModel(this.documento, this.email, this.nome, this.endereco, this.salarioBruto);
     }
