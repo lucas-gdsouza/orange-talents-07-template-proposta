@@ -25,11 +25,11 @@ public class UniqueElementValidator implements ConstraintValidator<UniqueElement
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
-        Query query = manager.createQuery("SELECT 1 FROM " + klass.getName() + " WHERE " + field + " =:value");
+        Query query = manager.createQuery("SELECT 1 FROM " + klass.getName() + " WHERE " + this.field + " =:value");
         query.setParameter("value", o);
 
         List<?> list = query.getResultList();
-        Assert.state(list.size() <= 1, "O elemento " + field + " está em uso");
+        Assert.state(list.size() <= 1, "O elemento " + this.field + " está em uso");
 
         return list.isEmpty();
     }

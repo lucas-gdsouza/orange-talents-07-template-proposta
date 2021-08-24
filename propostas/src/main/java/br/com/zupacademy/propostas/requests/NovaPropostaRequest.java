@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
-public class PropostaRequest {
+public class NovaPropostaRequest {
 
     @CPFOrCNPJ
     @NotBlank
@@ -29,7 +29,7 @@ public class PropostaRequest {
     @PositiveOrZero
     private BigDecimal salarioBruto;
 
-    public PropostaRequest(String documento, String email, String nome, String endereco, BigDecimal salarioBruto) {
+    public NovaPropostaRequest(String documento, String email, String nome, String endereco, BigDecimal salarioBruto) {
         this.documento = documento;
         this.email = email;
         this.nome = nome;
@@ -40,8 +40,12 @@ public class PropostaRequest {
     public String getDocumento() {
         return documento;
     }
+    
+    public String getNome() {
+        return nome;
+    }
 
-    public PropostaModel toModel() {
+    public @NotNull PropostaModel toModel() {
         return new PropostaModel(this.documento, this.email, this.nome, this.endereco, this.salarioBruto);
     }
 }
