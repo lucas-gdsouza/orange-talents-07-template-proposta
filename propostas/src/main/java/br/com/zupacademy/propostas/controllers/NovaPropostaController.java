@@ -1,6 +1,6 @@
 package br.com.zupacademy.propostas.controllers;
 
-import br.com.zupacademy.propostas.binders.ValidarCPFOuCNPJ;
+import br.com.zupacademy.propostas.customizations.binders.ValidarCPFOuCNPJ;
 import br.com.zupacademy.propostas.controllers.externals.EndpointValidadorDePropostas;
 import br.com.zupacademy.propostas.models.PropostaModel;
 import br.com.zupacademy.propostas.requests.AnaliseDePropostaRequest;

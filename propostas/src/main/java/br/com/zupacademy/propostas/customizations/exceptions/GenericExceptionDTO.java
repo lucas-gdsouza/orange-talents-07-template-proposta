@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.exceptions;
+package br.com.zupacademy.propostas.customizations.exceptions;
 
 public class GenericExceptionDTO {
     public String nome;

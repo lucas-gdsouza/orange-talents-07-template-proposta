@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.annotations;
+package br.com.zupacademy.propostas.customizations.annotations;
 
 import org.hibernate.validator.constraints.CompositionType;
 import org.hibernate.validator.constraints.ConstraintComposition;

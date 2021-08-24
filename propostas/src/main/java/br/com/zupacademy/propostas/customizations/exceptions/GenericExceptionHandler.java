@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.exceptions;
+package br.com.zupacademy.propostas.customizations.exceptions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

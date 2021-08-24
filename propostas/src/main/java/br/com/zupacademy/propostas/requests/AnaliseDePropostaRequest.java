@@ -1,6 +1,6 @@
 package br.com.zupacademy.propostas.requests;
 
-import br.com.zupacademy.propostas.annotations.CPFOrCNPJ;
+import br.com.zupacademy.propostas.customizations.annotations.CPFOrCNPJ;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

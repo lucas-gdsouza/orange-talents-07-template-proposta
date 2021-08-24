@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.annotations;
+package br.com.zupacademy.propostas.customizations.annotations;
 
 import org.springframework.util.Assert;
 

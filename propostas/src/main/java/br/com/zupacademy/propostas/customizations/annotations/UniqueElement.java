@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.annotations;
+package br.com.zupacademy.propostas.customizations.annotations;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueElement {
-    String message() default "{br.com.zupacademy.propostas.annotations.UniqueElement}";
+    String message() default "{br.com.zupacademy.propostas.customizations.annotations.UniqueElement}";
 
     Class<?>[] groups() default {};
 

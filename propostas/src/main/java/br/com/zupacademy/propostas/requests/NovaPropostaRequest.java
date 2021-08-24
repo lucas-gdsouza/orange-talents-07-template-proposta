@@ -1,7 +1,7 @@
 package br.com.zupacademy.propostas.requests;
 
-import br.com.zupacademy.propostas.annotations.CPFOrCNPJ;
-import br.com.zupacademy.propostas.annotations.UniqueElement;
+import br.com.zupacademy.propostas.customizations.annotations.CPFOrCNPJ;
+import br.com.zupacademy.propostas.customizations.annotations.UniqueElement;
 import br.com.zupacademy.propostas.models.PropostaModel;
 
 import javax.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.binders;
+package br.com.zupacademy.propostas.customizations.binders;
 
 import br.com.zupacademy.propostas.models.PropostaModel;
 import br.com.zupacademy.propostas.repositories.PropostaRepository;
