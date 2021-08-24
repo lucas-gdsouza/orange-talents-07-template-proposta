@@ -37,6 +37,10 @@ public class PropostaRequest {
         this.salarioBruto = salarioBruto;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     public String getDocumento() {
         return documento;
     }

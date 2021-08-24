@@ -8,8 +8,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
+import java.util.StringJoiner;
 
 @Entity
+@Table(name = "Propostas")
 public class PropostaModel {
 
     @Id
@@ -39,6 +41,8 @@ public class PropostaModel {
     @PositiveOrZero
     private BigDecimal salarioBruto;
 
+    //private String estadoDaProposta;
+
     /**
      * Para uso do Hibernate
      */
@@ -65,11 +69,25 @@ public class PropostaModel {
         Assert.hasText(nome, "O atributo 'nome' deve ser preenchido.");
         Assert.hasText(endereco, "O atributo 'endereco' deve ser preenchido.");
 
+        Assert.notNull(salarioBruto, "O atributo 'salarioBruto' não possui valor definido.");
         Assert.isTrue(salarioBruto.compareTo(new BigDecimal(0)) != -1,
                 "Um valor positivo deve ser atribuído ao 'salarioBruto'");
     }
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PropostaModel.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("documento='" + documento + "'")
+                .add("email='" + email + "'")
+                .add("nome='" + nome + "'")
+                .add("endereco='" + endereco + "'")
+                .add("salarioBruto=" + salarioBruto)
+              //  .add("estadoDaProposta='" + estadoDaProposta + "'")
+                .toString();
     }
 }
