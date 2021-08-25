@@ -1,7 +1,8 @@
 package br.com.zupacademy.propostas.models;
 
-import br.com.zupacademy.propostas.models.enums.EstadoDaProposta;
-import br.com.zupacademy.propostas.response.AnaliseDePropostaResponse;
+import br.com.zupacademy.propostas.models.enums.EstadoProposta;
+import br.com.zupacademy.propostas.response.NovoCartaoResponse;
+import br.com.zupacademy.propostas.response.SolicitacaoAnaliseResponse;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -45,7 +46,10 @@ public class PropostaModel {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private EstadoDaProposta estadoDaProposta = EstadoDaProposta.EM_ANALISE;
+    private EstadoProposta estadoProposta;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private CartaoModel cartao;
 
     /**
      * Para uso do Hibernate
@@ -63,6 +67,7 @@ public class PropostaModel {
         this.nome = nome;
         this.endereco = endereco;
         this.salarioBruto = salarioBruto;
+        this.estadoProposta = EstadoProposta.EM_ANALISE;
     }
 
     private void validarAtributos(String documento, String email, String nome,
@@ -82,8 +87,20 @@ public class PropostaModel {
         return id;
     }
 
-    public void alterarStatusDaAnaliseDeProposta(AnaliseDePropostaResponse response) {
-        this.estadoDaProposta = response.getResultadoSolicitacao();
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void associarCartaoComPropostaElegivel(NovoCartaoResponse response) {
+        this.cartao = response.toModel();
+    }
+
+    public void alterarStatusDaAnaliseDeProposta(SolicitacaoAnaliseResponse response) {
+        this.estadoProposta = response.getResultadoSolicitacao();
     }
 
     @Override
@@ -95,7 +112,7 @@ public class PropostaModel {
                 .add("nome='" + nome + "'")
                 .add("endereco='" + endereco + "'")
                 .add("salarioBruto=" + salarioBruto)
-                .add("estadoDaProposta='" + estadoDaProposta + "'")
+                .add("estadoProposta='" + estadoProposta + "'")
                 .toString();
     }
 }

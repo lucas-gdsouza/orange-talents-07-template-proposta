@@ -1,11 +1,11 @@
-package br.com.zupacademy.propostas.controllers;
+package br.com.zupacademy.propostas.resources;
 
 import br.com.zupacademy.propostas.customizations.binders.ValidarCPFOuCNPJ;
-import br.com.zupacademy.propostas.controllers.externals.EndpointValidadorDePropostas;
+import br.com.zupacademy.propostas.resources.externals.SolicitacaoAnaliseExternalResource;
 import br.com.zupacademy.propostas.models.PropostaModel;
-import br.com.zupacademy.propostas.requests.AnaliseDePropostaRequest;
+import br.com.zupacademy.propostas.requests.SolicitacaoAnaliseRequest;
 import br.com.zupacademy.propostas.requests.NovaPropostaRequest;
-import br.com.zupacademy.propostas.response.AnaliseDePropostaResponse;
+import br.com.zupacademy.propostas.response.SolicitacaoAnaliseResponse;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,15 +25,15 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/propostas")
-public class NovaPropostaController {
+public class PropostaResource {
 
-    private final Logger logger = LoggerFactory.getLogger(NovaPropostaController.class);
+    private final Logger logger = LoggerFactory.getLogger(PropostaResource.class);
 
     @PersistenceContext
     private EntityManager manager;
 
     @Autowired
-    private EndpointValidadorDePropostas endpointValidadorDePropostas;
+    private SolicitacaoAnaliseExternalResource solicitacaoAnaliseExternalResource;
 
     @Autowired
     private ValidarCPFOuCNPJ validarCPFOuCNPJ;
@@ -46,13 +46,13 @@ public class NovaPropostaController {
     @PostMapping
     @Transactional
     public ResponseEntity solicitarProposta(@RequestBody @Valid NovaPropostaRequest novaPropostaRequest,
-                                  UriComponentsBuilder uriComponentsBuilder) {
+                                            UriComponentsBuilder uriComponentsBuilder) {
 
         PropostaModel proposta = novaPropostaRequest.toModel();
         manager.persist(proposta);
 
         try {
-            AnaliseDePropostaResponse analiseDePropostaResponse =
+            SolicitacaoAnaliseResponse analiseDePropostaResponse =
                     getAnaliseDePropostaResponse(novaPropostaRequest, proposta.getId());
 
             proposta.alterarStatusDaAnaliseDeProposta(analiseDePropostaResponse);
@@ -62,7 +62,7 @@ public class NovaPropostaController {
 
         } catch (FeignException exception) {
             manager.getTransaction().rollback();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
                     "Erro ao tentar comunicar com API externa");
         }
 
@@ -70,14 +70,14 @@ public class NovaPropostaController {
         return ResponseEntity.created(uri).build();
     }
 
-    private AnaliseDePropostaResponse getAnaliseDePropostaResponse(NovaPropostaRequest novaPropostaRequest,
-                                                                   Long idProposta) {
-        AnaliseDePropostaRequest requestDePropostaSemStatus =
-                new AnaliseDePropostaRequest(idProposta,
+    private SolicitacaoAnaliseResponse getAnaliseDePropostaResponse(NovaPropostaRequest novaPropostaRequest,
+                                                                    Long idProposta) {
+        SolicitacaoAnaliseRequest propostaASerAnalisada =
+                new SolicitacaoAnaliseRequest(idProposta,
                         novaPropostaRequest.getDocumento(), novaPropostaRequest.getNome());
 
-        AnaliseDePropostaResponse analiseDePropostaResponse =
-                endpointValidadorDePropostas.enviarParaAnalise(requestDePropostaSemStatus);
+        SolicitacaoAnaliseResponse analiseDePropostaResponse =
+                solicitacaoAnaliseExternalResource.enviarParaAnalise(propostaASerAnalisada);
 
         return analiseDePropostaResponse;
     }
