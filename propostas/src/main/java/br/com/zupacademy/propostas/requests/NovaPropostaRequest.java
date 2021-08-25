@@ -11,12 +11,12 @@ import java.math.BigDecimal;
 
 public class NovaPropostaRequest {
 
-    //@CPFOrCNPJ
+    @CPFOrCNPJ
     @NotBlank
     private String documento;
 
     @NotBlank
-    //@UniqueElement(domainClass = PropostaModel.class, fieldName = "email", message = "O e-mail está em uso.")
+    @UniqueElement(domainClass = PropostaModel.class, fieldName = "email", message = "O e-mail está em uso.")
     private String email;
 
     @NotBlank

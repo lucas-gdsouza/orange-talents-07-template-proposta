@@ -5,6 +5,7 @@ import br.com.zupacademy.propostas.resources.externals.SolicitacaoAnaliseExterna
 import br.com.zupacademy.propostas.models.PropostaModel;
 import br.com.zupacademy.propostas.requests.SolicitacaoAnaliseRequest;
 import br.com.zupacademy.propostas.requests.NovaPropostaRequest;
+import br.com.zupacademy.propostas.response.ConsultaPropostaResponse;
 import br.com.zupacademy.propostas.response.SolicitacaoAnaliseResponse;
 import feign.FeignException;
 import org.slf4j.Logger;
@@ -80,5 +81,19 @@ public class PropostaResource {
                 solicitacaoAnaliseExternalResource.enviarParaAnalise(propostaASerAnalisada);
 
         return analiseDePropostaResponse;
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity consultarProposta(@PathVariable Long id) {
+
+        PropostaModel propostaModel = manager.find(PropostaModel.class, id);
+
+        if (propostaModel == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A proposta não existe");
+        }
+
+        ConsultaPropostaResponse response = new ConsultaPropostaResponse(propostaModel);
+
+        return ResponseEntity.ok(response);
     }
 }

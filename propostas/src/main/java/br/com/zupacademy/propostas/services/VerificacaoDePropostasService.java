@@ -62,6 +62,8 @@ public class VerificacaoDePropostasService {
 
                 propostaRepository.save(propostaModel);
 
+                logger.info("Proposta Associada com Cartão", propostaModel);
+
             } catch (FeignException exception) {
                 throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
                         "Erro ao tentar comunicar com API externa");

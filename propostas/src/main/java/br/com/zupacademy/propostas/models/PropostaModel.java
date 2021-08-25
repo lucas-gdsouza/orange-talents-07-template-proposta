@@ -25,12 +25,12 @@ public class PropostaModel {
      * O documento necessário deve ser o CPF/CNPJ
      */
 
-    //@Column(unique = true)
+    @Column(unique = true)
     @NotBlank
     private String documento;
 
-    //@Column(unique = true)
-    //@Email
+    @Column(unique = true)
+    @Email
     @NotBlank
     private String email;
 
@@ -91,8 +91,24 @@ public class PropostaModel {
         return documento;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public String getNome() {
         return nome;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public BigDecimal getSalarioBruto() {
+        return salarioBruto;
+    }
+
+    public EstadoProposta getEstadoProposta() {
+        return estadoProposta;
     }
 
     public void associarCartaoComPropostaElegivel(NovoCartaoResponse response) {
