@@ -25,12 +25,12 @@ public class PropostaModel {
      * O documento necessário deve ser o CPF/CNPJ
      */
 
-    @Column(unique = true)
+    //@Column(unique = true)
     @NotBlank
     private String documento;
 
-    @Column(unique = true)
-    @Email
+    //@Column(unique = true)
+    //@Email
     @NotBlank
     private String email;
 
