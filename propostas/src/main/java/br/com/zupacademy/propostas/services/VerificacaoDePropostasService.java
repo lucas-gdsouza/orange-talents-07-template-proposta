@@ -19,8 +19,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
 @Service
 public class VerificacaoDePropostasService {
 
@@ -47,22 +45,23 @@ public class VerificacaoDePropostasService {
                 findAllByEstadoPropostaAndCartaoIsNull(pageable, EstadoProposta.ELEGIVEL);
 
         if (listaDePropostas.isEmpty()) {
+            logger.info("Não houve associação de propostas com cartões nesta rodada.");
             return;
         }
 
         listaDePropostas.forEach(propostaModel -> {
-            NovoCartaoRequest novoCartaoRequest =
-                    new NovoCartaoRequest(propostaModel.getId(), propostaModel.getDocumento(), propostaModel.getNome());
+
+            NovoCartaoRequest novoCartaoRequest = new NovoCartaoRequest(propostaModel);
 
             try {
                 NovoCartaoResponse novoCartaoResponse =
                         cartoesExternalResource.realizarPedidoDeNovoCartao(novoCartaoRequest);
 
-                propostaModel.associarCartaoComPropostaElegivel(novoCartaoResponse);
+                propostaModel.adicionarCartaoComPropostaElegivel(novoCartaoResponse);
 
                 propostaRepository.save(propostaModel);
 
-                logger.info("Proposta Associada com Cartão", propostaModel);
+                logger.info("Associação de propostas com cartões efetuada.");
 
             } catch (FeignException exception) {
                 throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,

@@ -1,6 +1,7 @@
 package br.com.zupacademy.propostas.requests;
 
 import br.com.zupacademy.propostas.customizations.annotations.CPFOrCNPJ;
+import br.com.zupacademy.propostas.models.PropostaModel;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,10 +20,10 @@ public class SolicitacaoAnaliseRequest {
     @NotBlank
     private String nome;
 
-    public SolicitacaoAnaliseRequest(Long idProposta, String documento, String nome) {
-        this.idProposta = idProposta;
-        this.documento = documento;
-        this.nome = nome;
+    public SolicitacaoAnaliseRequest(@NotNull PropostaModel propostaModel) {
+        this.idProposta = propostaModel.getId();
+        this.documento = propostaModel.getDocumento();
+        this.nome = propostaModel.getNome();
     }
 
     /**

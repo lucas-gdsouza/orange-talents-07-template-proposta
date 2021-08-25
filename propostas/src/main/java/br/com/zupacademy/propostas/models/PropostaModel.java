@@ -111,11 +111,13 @@ public class PropostaModel {
         return estadoProposta;
     }
 
-    public void associarCartaoComPropostaElegivel(NovoCartaoResponse response) {
+    public void adicionarCartaoComPropostaElegivel(NovoCartaoResponse response) {
+        Assert.notNull(response, "Cartão precisa ser preenchido.");
         this.cartao = response.toModel();
     }
 
     public void alterarStatusDaAnaliseDeProposta(SolicitacaoAnaliseResponse response) {
+        Assert.notNull(response, "A proposta precisa ter estado.");
         this.estadoProposta = response.getResultadoSolicitacao();
     }
 
