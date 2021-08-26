@@ -76,14 +76,13 @@ public class PropostaResource {
         }
     }
 
-
     @GetMapping(value = "/{id}")
     public ResponseEntity consultarProposta(@PathVariable Long id) {
 
         Optional<PropostaModel> propostaModel = propostaRepository.findById(id);
 
         if (propostaModel.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A proposta não existe");
+            return ResponseEntity.notFound().build();
         }
 
         ConsultaPropostaResponse response = new ConsultaPropostaResponse(propostaModel.get());

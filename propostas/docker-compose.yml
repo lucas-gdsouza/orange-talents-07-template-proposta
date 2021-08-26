@@ -105,6 +105,19 @@ services:
       KAFKA_HOST: "kafka:29092"
       JAEGER_ENDPOINT: http://jaeger:14268/api/traces
 
+#  propostas:
+#    build: ./
+#    image: 'zupacademy/propostas'
+#    ports:
+#      - 8085:8080
+#    environment:
+#      URL_DATABASE: jdbc:postgresql://postgres_propostas:5432/propostas
+#      POSTGRES_USER: propostas
+#      POSTGRES_PASSWORD: 123
+#      POSTGRES_DB: propostas
+#    depends_on:
+#      - postgres_propostas
+
   jaeger:
     image: jaegertracing/all-in-one:1.21.0
     ports:
