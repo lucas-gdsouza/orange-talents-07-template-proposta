@@ -29,7 +29,9 @@ public class NovaPropostaRequest {
     @PositiveOrZero
     private BigDecimal salarioBruto;
 
-    public NovaPropostaRequest(String documento, String email, String nome, String endereco, BigDecimal salarioBruto) {
+    public NovaPropostaRequest(@NotBlank String documento, @NotBlank String email,
+                               @NotBlank String nome, @NotBlank String endereco,
+                               @NotNull @PositiveOrZero BigDecimal salarioBruto) {
         this.documento = documento;
         this.email = email;
         this.nome = nome;
@@ -39,10 +41,6 @@ public class NovaPropostaRequest {
 
     public String getDocumento() {
         return documento;
-    }
-    
-    public String getNome() {
-        return nome;
     }
 
     public @NotNull PropostaModel toModel() {

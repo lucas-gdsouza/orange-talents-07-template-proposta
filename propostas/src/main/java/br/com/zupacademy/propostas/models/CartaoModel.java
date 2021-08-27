@@ -16,12 +16,15 @@ public class CartaoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     @NotBlank
     private String numeroCartao;
 
+    @Column(nullable = false)
     @NotNull
     private LocalDateTime emitidoEm;
 
+    @Column(nullable = false)
     @NotBlank
     private String titular;
 

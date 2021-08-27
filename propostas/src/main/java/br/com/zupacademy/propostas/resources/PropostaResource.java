@@ -41,7 +41,6 @@ public class PropostaResource {
         binder.addValidators(validarCPFOuCNPJ);
     }
 
-
     @PostMapping
     public ResponseEntity solicitarProposta(@RequestBody @Valid NovaPropostaRequest novaPropostaRequest,
                                             UriComponentsBuilder uriComponentsBuilder) {
@@ -77,7 +76,7 @@ public class PropostaResource {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity consultarProposta(@PathVariable Long id) {
+    public ResponseEntity consultarProposta(@PathVariable("id") Long id) {
 
         Optional<PropostaModel> propostaModel = propostaRepository.findById(id);
 

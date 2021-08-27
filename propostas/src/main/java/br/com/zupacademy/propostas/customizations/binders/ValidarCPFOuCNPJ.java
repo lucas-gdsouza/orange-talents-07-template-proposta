@@ -25,12 +25,12 @@ public class ValidarCPFOuCNPJ implements Validator {
     }
 
     @Override
-    public void validate(Object o, Errors errors) {
+    public void validate(Object object, Errors errors) {
         if (errors.hasErrors()) {
             return;
         }
 
-        NovaPropostaRequest request = (NovaPropostaRequest) o;
+        NovaPropostaRequest request = (NovaPropostaRequest) object;
         Optional<PropostaModel> possivelDocumento = propostaRepository.findByDocumento(request.getDocumento());
 
         if (possivelDocumento.isPresent()) {

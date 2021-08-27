@@ -34,18 +34,22 @@ public class PropostaModel {
     @NotBlank
     private String email;
 
+    @Column(nullable = false)
     @NotBlank
     private String nome;
 
+    @Column(nullable = false)
     @NotBlank
     private String endereco;
 
+    @Column(nullable = false)
     @NotNull
     @PositiveOrZero
     private BigDecimal salarioBruto;
 
-    @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private EstadoProposta estadoProposta;
 
     @OneToOne(cascade = CascadeType.ALL)

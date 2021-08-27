@@ -12,5 +12,6 @@ import java.util.Optional;
 @Repository
 public interface PropostaRepository extends PagingAndSortingRepository<PropostaModel, Long> {
     Optional<PropostaModel> findByDocumento(String documento);
+
     Page<PropostaModel> findAllByEstadoPropostaAndCartaoIsNull(Pageable pageable, EstadoProposta estadoProposta);
 }
