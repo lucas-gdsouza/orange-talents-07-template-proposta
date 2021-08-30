@@ -35,13 +35,13 @@ public class BiometriaModel {
     }
 
     public BiometriaModel(@NotBlank String biometria, @NotNull CartaoModel cartao) {
-        validarCampos(biometria, cartao);
+        validarAtributos(biometria, cartao);
         this.criadoEm = LocalDateTime.now();
         this.biometria = biometria;
         this.cartao = cartao;
     }
 
-    private void validarCampos(String biometria, CartaoModel cartao) {
+    private void validarAtributos(String biometria, CartaoModel cartao) {
         Assert.isTrue(Base64.isBase64(biometria), "Biometria Inválida");
         Assert.notNull(cartao, "O atributo 'cartao' não foi definido.");
     }

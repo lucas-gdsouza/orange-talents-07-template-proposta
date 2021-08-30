@@ -1,5 +1,6 @@
 package br.com.zupacademy.propostas.response;
 
+import br.com.zupacademy.propostas.customizations.annotations.UniqueElement;
 import br.com.zupacademy.propostas.models.CartaoModel;
 
 import javax.validation.constraints.NotNull;
@@ -7,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.StringJoiner;
 
 public class NovoCartaoResponse {
+
+    @UniqueElement(domainClass = CartaoModel.class, fieldName = "numeroCartao")
     public String id;
     public LocalDateTime emitidoEm;
     public String titular;
