@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.customizations.security;
+/*package br.com.zupacademy.propostas.customizations.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,4 +23,4 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                         .anyRequest().authenticated()
         ).oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
     }
-}
+}*/

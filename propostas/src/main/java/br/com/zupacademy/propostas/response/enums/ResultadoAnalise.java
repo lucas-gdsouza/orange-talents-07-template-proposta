@@ -2,7 +2,7 @@ package br.com.zupacademy.propostas.response.enums;
 
 import br.com.zupacademy.propostas.models.enums.EstadoProposta;
 
-public enum DevolutivaSolicitacaoAnalise {
+public enum ResultadoAnalise {
 
     COM_RESTRICAO {
         @Override

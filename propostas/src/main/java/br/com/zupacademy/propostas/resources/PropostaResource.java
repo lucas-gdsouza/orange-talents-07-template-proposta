@@ -46,7 +46,7 @@ public class PropostaResource {
                                             UriComponentsBuilder uriComponentsBuilder) {
 
         PropostaModel proposta = cadastrarProposta(novaPropostaRequest);
-        solicitarAnalise(novaPropostaRequest, proposta);
+        solicitarAnalise(proposta);
 
         URI uri = uriComponentsBuilder.path("/api/v1/propostas/{id}").buildAndExpand(proposta.getId()).toUri();
         return ResponseEntity.created(uri).build();
@@ -58,7 +58,7 @@ public class PropostaResource {
         return proposta;
     }
 
-    private void solicitarAnalise(NovaPropostaRequest novaPropostaRequest, PropostaModel proposta) {
+    private void solicitarAnalise(PropostaModel proposta) {
         try {
             SolicitacaoAnaliseRequest propostaASerAnalisada = new SolicitacaoAnaliseRequest(proposta);
 

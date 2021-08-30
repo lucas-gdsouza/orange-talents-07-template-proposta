@@ -1,7 +1,7 @@
 package br.com.zupacademy.propostas.response;
 
 import br.com.zupacademy.propostas.models.enums.EstadoProposta;
-import br.com.zupacademy.propostas.response.enums.DevolutivaSolicitacaoAnalise;
+import br.com.zupacademy.propostas.response.enums.ResultadoAnalise;
 
 public class SolicitacaoAnaliseResponse {
 
@@ -19,6 +19,6 @@ public class SolicitacaoAnaliseResponse {
     }
 
     public EstadoProposta getResultadoSolicitacao() {
-        return DevolutivaSolicitacaoAnalise.valueOf(this.resultadoSolicitacao).retornarEstado();
+        return ResultadoAnalise.valueOf(this.resultadoSolicitacao).retornarEstado();
     }
 }

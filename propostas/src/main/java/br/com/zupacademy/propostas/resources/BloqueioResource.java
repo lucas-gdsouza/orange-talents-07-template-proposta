@@ -3,10 +3,16 @@ package br.com.zupacademy.propostas.resources;
 import br.com.zupacademy.propostas.models.BloqueioModel;
 import br.com.zupacademy.propostas.repositories.BloqueioRepository;
 import br.com.zupacademy.propostas.repositories.CartaoRepository;
-import br.com.zupacademy.propostas.requests.BloqueioCartaoRequest;
+import br.com.zupacademy.propostas.requests.BloqueioCartaoInternalRequest;
+import br.com.zupacademy.propostas.resources.externals.CartoesExternalResource;
+import br.com.zupacademy.propostas.response.BloqueioCartaoResponse;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/v1/bloqueio-cartao")
@@ -18,14 +24,32 @@ public class BloqueioResource {
     @Autowired
     private CartaoRepository cartaoRepository;
 
-    @PostMapping(value = "/{id}")
-    public ResponseEntity solicitarBloqueioDeCartaoPorId(@PathVariable Long id,
+    @Autowired
+    private CartoesExternalResource cartoesExternalResource;
+
+    @Value("${spring.application.name}")
+    private String systemName;
+
+    @PostMapping(value = "/{numeroCartao}")
+    public ResponseEntity solicitarBloqueioDeCartaoPorId(@PathVariable String numeroCartao,
                                                          @RequestHeader(value = "ip") String ip,
                                                          @RequestHeader(value = "User-Agent") String userAgent) {
 
-        BloqueioCartaoRequest request = new BloqueioCartaoRequest(id, ip, userAgent);
+        BloqueioCartaoInternalRequest request = new BloqueioCartaoInternalRequest(numeroCartao, ip, userAgent);
         BloqueioModel bloqueioModel = request.toModel(bloqueioRepository, cartaoRepository);
-        bloqueioRepository.save(bloqueioModel);
+
+        try {
+            BloqueioCartaoResponse bloqueioCartaoResponse =
+                    cartoesExternalResource.solicitarBloqueioDeCartao(numeroCartao,
+                            new BloqueioCartaoExternalRequest(systemName));
+            bloqueioModel.estadoDoCartao(bloqueioCartaoResponse.getResultado());
+
+            bloqueioRepository.save(bloqueioModel);
+
+        } catch (FeignException exception) {
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
+                    "Erro ao tentar comunicar com API externa");
+        }
 
         return ResponseEntity.ok().build();
     }

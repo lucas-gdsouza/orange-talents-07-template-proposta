@@ -31,6 +31,8 @@ public class BloqueioModel {
     @NotBlank
     private String userAgent;
 
+    private String estadoDoCartao;
+
     /**
      * Para uso do Hibernate
      */
@@ -61,5 +63,9 @@ public class BloqueioModel {
                 .add("ip='" + ip + "'")
                 .add("userAgent='" + userAgent + "'")
                 .toString();
+    }
+
+    public void estadoDoCartao(String resultado) {
+        this.estadoDoCartao = resultado;
     }
 }

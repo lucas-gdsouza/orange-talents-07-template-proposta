@@ -10,26 +10,26 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+
 import java.util.Optional;
 
-public class BloqueioCartaoRequest {
-    private Long idCartao;
+public class BloqueioCartaoInternalRequest {
+    private String numeroCartao;
     private String ip;
     private String userAgent;
 
-    public BloqueioCartaoRequest(@NotNull @Positive Long idCartao, @NotBlank String ip, @NotBlank String userAgent) {
-        validarAtributos(idCartao, ip, userAgent);
+    public BloqueioCartaoInternalRequest(@NotBlank String numeroCartao, @NotBlank String ip, @NotBlank String userAgent) {
+        validarAtributos(numeroCartao, ip, userAgent);
 
-        this.idCartao = idCartao;
+        this.numeroCartao = numeroCartao;
         this.ip = ip;
         this.userAgent = userAgent;
     }
 
-    private void validarAtributos(Long idCartao, String ip, String userAgent) {
+    private void validarAtributos(String numeroCartao, String ip, String userAgent) {
 
-        if (idCartao == null || idCartao <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID inválido");
+        if (numeroCartao == null || numeroCartao.trim().equals("")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cartão Inválido");
         }
 
         if (!InetAddressUtils.isIPv4Address(ip)) {
@@ -43,7 +43,7 @@ public class BloqueioCartaoRequest {
 
     public @NotNull BloqueioModel toModel(BloqueioRepository bloqueioRepository, CartaoRepository cartaoRepository) {
 
-        Optional<CartaoModel> cartaoModel = cartaoRepository.findById(this.idCartao);
+        Optional<CartaoModel> cartaoModel = cartaoRepository.findByNumeroCartao(this.numeroCartao);
 
         if (cartaoModel.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado.");
