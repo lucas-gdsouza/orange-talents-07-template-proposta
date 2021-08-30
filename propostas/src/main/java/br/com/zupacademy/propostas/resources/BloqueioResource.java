@@ -27,6 +27,6 @@ public class BloqueioResource {
         BloqueioModel bloqueioModel = request.toModel(bloqueioRepository, cartaoRepository);
         bloqueioRepository.save(bloqueioModel);
 
-        return ResponseEntity.ok(bloqueioModel.toString());
+        return ResponseEntity.ok().build();
     }
 }
