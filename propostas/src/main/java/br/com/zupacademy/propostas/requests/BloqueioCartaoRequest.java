@@ -46,7 +46,7 @@ public class BloqueioCartaoRequest {
         Optional<CartaoModel> cartaoModel = cartaoRepository.findById(this.idCartao);
 
         if (cartaoModel.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cartão não existe.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado.");
         }
 
         Optional<BloqueioModel> bloqueioModel = bloqueioRepository.findByCartao(cartaoModel.get());
