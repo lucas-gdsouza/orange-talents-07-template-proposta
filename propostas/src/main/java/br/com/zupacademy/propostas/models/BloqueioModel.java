@@ -1,5 +1,6 @@
 package br.com.zupacademy.propostas.models;
 
+import br.com.zupacademy.propostas.response.BloqueioCartaoResponse;
 import org.apache.http.conn.util.InetAddressUtils;
 import org.springframework.util.Assert;
 
@@ -54,6 +55,10 @@ public class BloqueioModel {
         Assert.hasText(userAgent, "O atributo 'userAgent' deve ser preenchido.");
     }
 
+    public void estadoDoCartao(BloqueioCartaoResponse response) {
+        this.estadoDoCartao = response.getResultado();
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", BloqueioModel.class.getSimpleName() + "[", "]")
@@ -63,9 +68,5 @@ public class BloqueioModel {
                 .add("ip='" + ip + "'")
                 .add("userAgent='" + userAgent + "'")
                 .toString();
-    }
-
-    public void estadoDoCartao(String resultado) {
-        this.estadoDoCartao = resultado;
     }
 }

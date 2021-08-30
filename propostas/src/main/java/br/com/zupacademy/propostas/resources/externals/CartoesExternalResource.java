@@ -1,7 +1,7 @@
 package br.com.zupacademy.propostas.resources.externals;
 
 import br.com.zupacademy.propostas.requests.NovoCartaoRequest;
-import br.com.zupacademy.propostas.resources.BloqueioCartaoExternalRequest;
+import br.com.zupacademy.propostas.requests.BloqueioCartaoExternalRequest;
 import br.com.zupacademy.propostas.response.BloqueioCartaoResponse;
 import br.com.zupacademy.propostas.response.NovoCartaoResponse;
 import org.springframework.cloud.openfeign.FeignClient;

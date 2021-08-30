@@ -3,6 +3,7 @@ package br.com.zupacademy.propostas.resources;
 import br.com.zupacademy.propostas.models.BloqueioModel;
 import br.com.zupacademy.propostas.repositories.BloqueioRepository;
 import br.com.zupacademy.propostas.repositories.CartaoRepository;
+import br.com.zupacademy.propostas.requests.BloqueioCartaoExternalRequest;
 import br.com.zupacademy.propostas.requests.BloqueioCartaoInternalRequest;
 import br.com.zupacademy.propostas.resources.externals.CartoesExternalResource;
 import br.com.zupacademy.propostas.response.BloqueioCartaoResponse;
@@ -42,7 +43,7 @@ public class BloqueioResource {
             BloqueioCartaoResponse bloqueioCartaoResponse =
                     cartoesExternalResource.solicitarBloqueioDeCartao(numeroCartao,
                             new BloqueioCartaoExternalRequest(systemName));
-            bloqueioModel.estadoDoCartao(bloqueioCartaoResponse.getResultado());
+            bloqueioModel.estadoDoCartao(bloqueioCartaoResponse);
 
             bloqueioRepository.save(bloqueioModel);
 
