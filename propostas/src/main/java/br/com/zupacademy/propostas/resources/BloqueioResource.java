@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/v1/bloqueio-cartao")
+@RequestMapping("/api/v1/bloqueios")
 public class BloqueioResource {
 
     @Autowired
@@ -31,10 +31,10 @@ public class BloqueioResource {
     @Value("${spring.application.name}")
     private String systemName;
 
-    @PostMapping(value = "/{numeroCartao}")
-    public ResponseEntity solicitarBloqueioDeCartaoPorId(@PathVariable String numeroCartao,
-                                                         @RequestHeader(value = "ip") String ip,
-                                                         @RequestHeader(value = "User-Agent") String userAgent) {
+    @PostMapping(value = "/{numeroCartao}/cartoes")
+    public ResponseEntity solicitarBloqueioDeCartao(@PathVariable String numeroCartao,
+                                                    @RequestHeader(value = "ip") String ip,
+                                                    @RequestHeader(value = "User-Agent") String userAgent) {
 
         BloqueioCartaoInternalRequest request = new BloqueioCartaoInternalRequest(numeroCartao, ip, userAgent);
         BloqueioModel bloqueioModel = request.toModel(bloqueioRepository, cartaoRepository);

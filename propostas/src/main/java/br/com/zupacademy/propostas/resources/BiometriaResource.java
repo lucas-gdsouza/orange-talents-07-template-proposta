@@ -2,7 +2,6 @@ package br.com.zupacademy.propostas.resources;
 
 import br.com.zupacademy.propostas.customizations.binders.ValidarBiometria;
 import br.com.zupacademy.propostas.models.BiometriaModel;
-import br.com.zupacademy.propostas.models.CartaoModel;
 import br.com.zupacademy.propostas.repositories.CartaoRepository;
 import br.com.zupacademy.propostas.requests.NovaBiometriaRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/biometrias")
@@ -42,13 +40,7 @@ public class BiometriaResource {
                                              @RequestBody @Valid NovaBiometriaRequest request,
                                              UriComponentsBuilder uriComponentsBuilder) {
 
-        Optional<CartaoModel> cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
-
-        if (cartao.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        BiometriaModel biometriaModel = request.toModel(cartao.get());
+        BiometriaModel biometriaModel = request.toModel(cartaoRepository, numeroCartao);
         manager.persist(biometriaModel);
 
         URI uri = uriComponentsBuilder.path("/api/v1/biometrias/{id}").buildAndExpand(biometriaModel.getId()).toUri();

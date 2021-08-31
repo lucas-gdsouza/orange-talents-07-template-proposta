@@ -18,6 +18,7 @@ public class BloqueioModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @ManyToOne
     private CartaoModel cartao;
 
@@ -41,7 +42,7 @@ public class BloqueioModel {
     public BloqueioModel() {
     }
 
-    public BloqueioModel(CartaoModel cartaoModel, String ip, String userAgent) {
+    public BloqueioModel(@NotNull CartaoModel cartaoModel, @NotBlank String ip, @NotBlank String userAgent) {
         validarAtributos(cartaoModel, ip, userAgent);
         this.cartao = cartaoModel;
         this.bloqueadoEm = LocalDateTime.now();
@@ -56,6 +57,7 @@ public class BloqueioModel {
     }
 
     public void estadoDoCartao(BloqueioCartaoResponse response) {
+        Assert.hasText(response.getResultado(), "O estado do cartão deve ser preenchido.");
         this.estadoDoCartao = response.getResultado();
     }
 

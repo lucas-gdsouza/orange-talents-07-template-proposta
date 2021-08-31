@@ -24,6 +24,7 @@ public class BiometriaModel {
     @NotBlank
     private String biometria;
 
+    @NotNull
     @ManyToOne
     private CartaoModel cartao;
 
