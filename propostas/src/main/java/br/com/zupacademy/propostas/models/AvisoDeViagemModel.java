@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.StringJoiner;
 
 @Entity
@@ -27,12 +27,12 @@ public class AvisoDeViagemModel {
 
     @Column(nullable = false)
     @NotNull
-    private LocalDateTime criadoEm;
+    private LocalDate criadoEm;
 
     @Column(nullable = false)
     @NotNull
     @FutureOrPresent
-    private LocalDateTime terminoEm;
+    private LocalDate terminoEm;
 
     @Column(nullable = false)
     @NotBlank
@@ -49,18 +49,18 @@ public class AvisoDeViagemModel {
     public AvisoDeViagemModel() {
     }
 
-    public AvisoDeViagemModel(@NotNull CartaoModel cartao, @NotBlank String destino, @NotNull LocalDateTime terminoEm,
+    public AvisoDeViagemModel(@NotNull CartaoModel cartao, @NotBlank String destino, @NotNull LocalDate terminoEm,
                               @NotBlank String ip, @NotBlank String userAgent) {
         validarAtributos(cartao, destino, terminoEm, ip, userAgent);
         this.cartao = cartao;
         this.destino = destino;
-        this.criadoEm = LocalDateTime.now();
+        this.criadoEm = LocalDate.now();
         this.terminoEm = terminoEm;
         this.ip = ip;
         this.userAgent = userAgent;
     }
 
-    private void validarAtributos(CartaoModel cartao, String destino, LocalDateTime terminoEm,
+    private void validarAtributos(CartaoModel cartao, String destino, LocalDate terminoEm,
                                   String ip, String userAgent) {
         Assert.notNull(cartao, "O atributo 'cartaoModel' não possui valor definido.");
         Assert.hasText(destino, "O atributo 'destino' deve ser preenchido.");

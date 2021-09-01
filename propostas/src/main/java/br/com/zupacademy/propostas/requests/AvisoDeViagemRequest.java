@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 public class AvisoDeViagemRequest {
@@ -21,13 +21,14 @@ public class AvisoDeViagemRequest {
 
     @NotNull
     @FutureOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime terminaEm;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate terminaEm;
 
-    public AvisoDeViagemRequest(@NotBlank String destino, @NotNull LocalDateTime terminaEm) {
+    public AvisoDeViagemRequest(@NotBlank String destino, @NotNull LocalDate terminaEm) {
         this.destino = destino;
         this.terminaEm = terminaEm;
     }
+
     private void validarParametros(String numeroCartao, String ip, String userAgent) {
 
         if (numeroCartao == null || numeroCartao.trim().equals("")) {

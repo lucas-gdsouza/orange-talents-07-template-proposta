@@ -1,5 +1,6 @@
 package br.com.zupacademy.propostas.resources.externals;
 
+import br.com.zupacademy.propostas.requests.AvisoDeViagemRequest;
 import br.com.zupacademy.propostas.requests.NovoCartaoRequest;
 import br.com.zupacademy.propostas.requests.BloqueioCartaoExternalRequest;
 import br.com.zupacademy.propostas.response.BloqueioCartaoResponse;
@@ -18,12 +19,11 @@ public interface CartoesExternalResource {
     NovoCartaoResponse realizarPedidoDeNovoCartao
             (@RequestBody @Valid NovoCartaoRequest request);
 
-    /**
-     *
-     * @param id é o Número do Cartão
-     * @return
-     */
     @PostMapping(value = "/{id}/bloqueios")
     BloqueioCartaoResponse solicitarBloqueioDeCartao
-            (@PathVariable String id, @RequestBody BloqueioCartaoExternalRequest bloqueioCartaoExternalRequest);
+            (@PathVariable("id") String numeroCartao, @RequestBody BloqueioCartaoExternalRequest bloqueioCartaoExternalRequest);
+
+    @PostMapping(value = "/{id}/avisos")
+    void enviarAvisoDeViagem(@PathVariable("id") String numeroCartao,
+                                       @RequestBody AvisoDeViagemRequest avisoDeViagemRequest);
 }
