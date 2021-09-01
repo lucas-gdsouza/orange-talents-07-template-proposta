@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.requests;
+package br.com.zupacademy.propostas.requests.internals;
 
 import br.com.zupacademy.propostas.models.BiometriaModel;
 import br.com.zupacademy.propostas.models.CartaoModel;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
-public class NovaBiometriaRequest {
+public class NovaBiometriaInternalRequest {
 
     @NotBlank
     private String biometria;
@@ -19,7 +19,7 @@ public class NovaBiometriaRequest {
     /**
      * @param biometria - Necessário utilizar @JsonProperty quando há somente um parâmetro no construtor
      */
-    public NovaBiometriaRequest(@NotBlank @JsonProperty(value = "biometria") String biometria) {
+    public NovaBiometriaInternalRequest(@NotBlank @JsonProperty(value = "biometria") String biometria) {
         this.biometria = biometria;
     }
 

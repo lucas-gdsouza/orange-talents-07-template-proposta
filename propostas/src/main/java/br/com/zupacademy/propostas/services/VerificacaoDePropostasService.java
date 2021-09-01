@@ -3,7 +3,7 @@ package br.com.zupacademy.propostas.services;
 import br.com.zupacademy.propostas.models.PropostaModel;
 import br.com.zupacademy.propostas.models.enums.EstadoProposta;
 import br.com.zupacademy.propostas.repositories.PropostaRepository;
-import br.com.zupacademy.propostas.requests.NovoCartaoRequest;
+import br.com.zupacademy.propostas.requests.externals.NovoCartaoExternalRequest;
 import br.com.zupacademy.propostas.resources.externals.CartoesExternalResource;
 import br.com.zupacademy.propostas.response.NovoCartaoResponse;
 import feign.FeignException;
@@ -51,11 +51,11 @@ public class VerificacaoDePropostasService {
 
         listaDePropostas.forEach(propostaModel -> {
 
-            NovoCartaoRequest novoCartaoRequest = new NovoCartaoRequest(propostaModel);
+            NovoCartaoExternalRequest novoCartaoExternalRequest = new NovoCartaoExternalRequest(propostaModel);
 
             try {
                 NovoCartaoResponse novoCartaoResponse =
-                        cartoesExternalResource.realizarPedidoDeNovoCartao(novoCartaoRequest);
+                        cartoesExternalResource.realizarPedidoDeNovoCartao(novoCartaoExternalRequest);
 
                 propostaModel.adicionarCartaoComPropostaElegivel(novoCartaoResponse);
 

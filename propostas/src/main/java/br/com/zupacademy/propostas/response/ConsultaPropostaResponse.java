@@ -3,6 +3,7 @@ package br.com.zupacademy.propostas.response;
 import br.com.zupacademy.propostas.models.PropostaModel;
 import br.com.zupacademy.propostas.models.enums.EstadoProposta;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class ConsultaPropostaResponse {
@@ -14,7 +15,7 @@ public class ConsultaPropostaResponse {
     private BigDecimal salarioBruto;
     private EstadoProposta estadoProposta;
 
-    public ConsultaPropostaResponse(PropostaModel propostaModel) {
+    public ConsultaPropostaResponse(@NotNull PropostaModel propostaModel) {
         this.documento = propostaModel.getDocumento();
         this.email = propostaModel.getEmail();
         this.nome = propostaModel.getNome();

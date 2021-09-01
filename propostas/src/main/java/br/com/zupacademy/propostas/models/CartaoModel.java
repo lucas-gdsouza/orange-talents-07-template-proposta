@@ -6,7 +6,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.*;
+import java.util.ArrayList;
 import java.util.StringJoiner;
+
 
 @Entity
 @Table(name = "Cartoes")
@@ -27,6 +30,12 @@ public class CartaoModel {
     @Column(nullable = false)
     @NotBlank
     private String titular;
+
+    @OneToMany(mappedBy = "cartao")
+    private List<BloqueioModel> bloqueios = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cartao")
+    private List<AvisoViagemModel> avisos = new ArrayList<>();
 
     /**
      * Para uso do Hibernate

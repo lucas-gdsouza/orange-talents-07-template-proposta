@@ -1,8 +1,8 @@
 package br.com.zupacademy.propostas.resources.externals;
 
-import br.com.zupacademy.propostas.requests.AvisoDeViagemRequest;
-import br.com.zupacademy.propostas.requests.NovoCartaoRequest;
-import br.com.zupacademy.propostas.requests.BloqueioCartaoExternalRequest;
+import br.com.zupacademy.propostas.requests.both.AvisoViagemRequest;
+import br.com.zupacademy.propostas.requests.externals.NovoCartaoExternalRequest;
+import br.com.zupacademy.propostas.requests.externals.BloqueioCartaoExternalRequest;
 import br.com.zupacademy.propostas.response.BloqueioCartaoResponse;
 import br.com.zupacademy.propostas.response.NovoCartaoResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -17,7 +17,7 @@ public interface CartoesExternalResource {
 
     @PostMapping(value = "/")
     NovoCartaoResponse realizarPedidoDeNovoCartao
-            (@RequestBody @Valid NovoCartaoRequest request);
+            (@RequestBody @Valid NovoCartaoExternalRequest request);
 
     @PostMapping(value = "/{id}/bloqueios")
     BloqueioCartaoResponse solicitarBloqueioDeCartao
@@ -25,5 +25,5 @@ public interface CartoesExternalResource {
 
     @PostMapping(value = "/{id}/avisos")
     void enviarAvisoDeViagem(@PathVariable("id") String numeroCartao,
-                                       @RequestBody AvisoDeViagemRequest avisoDeViagemRequest);
+                                       @RequestBody AvisoViagemRequest avisoViagemRequest);
 }

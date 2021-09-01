@@ -1,9 +1,9 @@
 package br.com.zupacademy.propostas.resources;
 
-import br.com.zupacademy.propostas.models.AvisoDeViagemModel;
-import br.com.zupacademy.propostas.repositories.AvisoDeViagemRepository;
+import br.com.zupacademy.propostas.models.AvisoViagemModel;
+import br.com.zupacademy.propostas.repositories.AvisoViagemRepository;
 import br.com.zupacademy.propostas.repositories.CartaoRepository;
-import br.com.zupacademy.propostas.requests.AvisoDeViagemRequest;
+import br.com.zupacademy.propostas.requests.both.AvisoViagemRequest;
 import br.com.zupacademy.propostas.resources.externals.CartoesExternalResource;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,13 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/avisos")
-public class AvisoDeViagemResource {
+public class AvisoViagemResource {
 
     @Autowired
     private CartoesExternalResource cartoesExternalResource;
 
     @Autowired
-    private AvisoDeViagemRepository avisoDeViagemRepository;
+    private AvisoViagemRepository avisoViagemRepository;
 
     @Autowired
     private CartaoRepository cartaoRepository;
@@ -31,14 +31,14 @@ public class AvisoDeViagemResource {
     public ResponseEntity emitirAvisoViagem(@PathVariable String numeroCartao,
                                             @RequestHeader(value = "ip") String ip,
                                             @RequestHeader(value = "User-Agent") String userAgent,
-                                            @RequestBody @Valid AvisoDeViagemRequest avisoDeViagemRequest) {
+                                            @RequestBody @Valid AvisoViagemRequest avisoViagemRequest) {
 
-        AvisoDeViagemModel avisoDeViagemModel =
-                avisoDeViagemRequest.toModel(cartaoRepository, numeroCartao, ip, userAgent);
+        AvisoViagemModel avisoDeViagemModel =
+                avisoViagemRequest.toModel(cartaoRepository, numeroCartao, ip, userAgent);
 
         try {
-            cartoesExternalResource.enviarAvisoDeViagem(numeroCartao, avisoDeViagemRequest);
-            avisoDeViagemRepository.save(avisoDeViagemModel);
+            cartoesExternalResource.enviarAvisoDeViagem(numeroCartao, avisoViagemRequest);
+            avisoViagemRepository.save(avisoDeViagemModel);
 
         } catch (FeignException exception) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,

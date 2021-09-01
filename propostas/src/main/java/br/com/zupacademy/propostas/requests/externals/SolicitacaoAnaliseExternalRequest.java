@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.requests;
+package br.com.zupacademy.propostas.requests.externals;
 
 import br.com.zupacademy.propostas.customizations.annotations.CPFOrCNPJ;
 import br.com.zupacademy.propostas.models.PropostaModel;
@@ -7,7 +7,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-public class NovoCartaoRequest {
+public class SolicitacaoAnaliseExternalRequest {
+
     @NotNull
     @Positive
     private Long idProposta;
@@ -19,7 +20,7 @@ public class NovoCartaoRequest {
     @NotBlank
     private String nome;
 
-    public NovoCartaoRequest(@NotNull PropostaModel propostaModel) {
+    public SolicitacaoAnaliseExternalRequest(@NotNull PropostaModel propostaModel) {
         this.idProposta = propostaModel.getId();
         this.documento = propostaModel.getDocumento();
         this.nome = propostaModel.getNome();

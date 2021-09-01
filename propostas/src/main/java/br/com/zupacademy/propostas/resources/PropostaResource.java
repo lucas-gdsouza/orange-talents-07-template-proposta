@@ -2,10 +2,10 @@ package br.com.zupacademy.propostas.resources;
 
 import br.com.zupacademy.propostas.customizations.binders.ValidarCPFOuCNPJ;
 import br.com.zupacademy.propostas.repositories.PropostaRepository;
+import br.com.zupacademy.propostas.requests.externals.SolicitacaoAnaliseExternalRequest;
 import br.com.zupacademy.propostas.resources.externals.SolicitacaoAnaliseExternalResource;
 import br.com.zupacademy.propostas.models.PropostaModel;
-import br.com.zupacademy.propostas.requests.SolicitacaoAnaliseRequest;
-import br.com.zupacademy.propostas.requests.NovaPropostaRequest;
+import br.com.zupacademy.propostas.requests.internals.SolicitacaoAnaliseInternalRequest;
 import br.com.zupacademy.propostas.response.ConsultaPropostaResponse;
 import br.com.zupacademy.propostas.response.SolicitacaoAnaliseResponse;
 
@@ -42,25 +42,26 @@ public class PropostaResource {
     }
 
     @PostMapping
-    public ResponseEntity solicitarProposta(@RequestBody @Valid NovaPropostaRequest novaPropostaRequest,
+    public ResponseEntity solicitarProposta(@RequestBody @Valid SolicitacaoAnaliseInternalRequest solicitacaoAnaliseInternalRequest,
                                             UriComponentsBuilder uriComponentsBuilder) {
 
-        PropostaModel proposta = cadastrarProposta(novaPropostaRequest);
-        solicitarAnalise(proposta);
+        PropostaModel proposta = cadastrarPropostaEmSistemaInterno(solicitacaoAnaliseInternalRequest);
+        enviarPropostaParaAnaliseEmSistemaExterno(proposta);
 
         URI uri = uriComponentsBuilder.path("/api/v1/propostas/{id}").buildAndExpand(proposta.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
-    private PropostaModel cadastrarProposta(NovaPropostaRequest novaPropostaRequest) {
-        PropostaModel proposta = novaPropostaRequest.toModel();
+    private PropostaModel cadastrarPropostaEmSistemaInterno(SolicitacaoAnaliseInternalRequest
+                                                                    solicitacaoAnaliseInternalRequest) {
+        PropostaModel proposta = solicitacaoAnaliseInternalRequest.toModel();
         propostaRepository.save(proposta);
         return proposta;
     }
 
-    private void solicitarAnalise(PropostaModel proposta) {
+    private void enviarPropostaParaAnaliseEmSistemaExterno(PropostaModel proposta) {
         try {
-            SolicitacaoAnaliseRequest propostaASerAnalisada = new SolicitacaoAnaliseRequest(proposta);
+            SolicitacaoAnaliseExternalRequest propostaASerAnalisada = new SolicitacaoAnaliseExternalRequest(proposta);
 
             SolicitacaoAnaliseResponse analiseDePropostaResponse =
                     solicitacaoAnaliseExternalResource.enviarParaAnalise(propostaASerAnalisada);

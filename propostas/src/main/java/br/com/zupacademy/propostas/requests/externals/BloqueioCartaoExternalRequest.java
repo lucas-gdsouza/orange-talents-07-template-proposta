@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.requests;
+package br.com.zupacademy.propostas.requests.externals;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

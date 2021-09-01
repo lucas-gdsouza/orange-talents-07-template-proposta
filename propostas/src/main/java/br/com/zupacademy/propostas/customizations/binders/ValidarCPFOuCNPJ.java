@@ -2,7 +2,7 @@ package br.com.zupacademy.propostas.customizations.binders;
 
 import br.com.zupacademy.propostas.models.PropostaModel;
 import br.com.zupacademy.propostas.repositories.PropostaRepository;
-import br.com.zupacademy.propostas.requests.NovaPropostaRequest;
+import br.com.zupacademy.propostas.requests.internals.SolicitacaoAnaliseInternalRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class ValidarCPFOuCNPJ implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return NovaPropostaRequest.class.isAssignableFrom(aClass);
+        return SolicitacaoAnaliseInternalRequest.class.isAssignableFrom(aClass);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ValidarCPFOuCNPJ implements Validator {
             return;
         }
 
-        NovaPropostaRequest request = (NovaPropostaRequest) object;
+        SolicitacaoAnaliseInternalRequest request = (SolicitacaoAnaliseInternalRequest) object;
         Optional<PropostaModel> possivelDocumento = propostaRepository.findByDocumento(request.getDocumento());
 
         if (possivelDocumento.isPresent()) {

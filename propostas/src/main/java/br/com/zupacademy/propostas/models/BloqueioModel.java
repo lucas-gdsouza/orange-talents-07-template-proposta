@@ -23,6 +23,10 @@ public class BloqueioModel {
     private CartaoModel cartao;
 
     @NotNull
+    @Column(nullable = false)
+    private boolean bloqueado;
+
+    @NotNull
     private LocalDateTime bloqueadoEm;
 
     @Column(nullable = false)
@@ -33,7 +37,6 @@ public class BloqueioModel {
     @NotBlank
     private String userAgent;
 
-    private String estadoDoCartao;
 
     /**
      * Para uso do Hibernate
@@ -45,6 +48,7 @@ public class BloqueioModel {
     public BloqueioModel(@NotNull CartaoModel cartaoModel, @NotBlank String ip, @NotBlank String userAgent) {
         validarAtributos(cartaoModel, ip, userAgent);
         this.cartao = cartaoModel;
+        this.bloqueado = false;
         this.bloqueadoEm = LocalDateTime.now();
         this.ip = ip;
         this.userAgent = userAgent;
@@ -57,8 +61,8 @@ public class BloqueioModel {
     }
 
     public void estadoDoCartao(BloqueioCartaoResponse response) {
-        Assert.hasText(response.getResultado(), "O estado do cartão deve ser preenchido.");
-        this.estadoDoCartao = response.getResultado();
+        Assert.notNull(response.getResultado(), "O estado do cartão deve ser preenchido.");
+        this.bloqueado = response.getResultado();
     }
 
     @Override
@@ -66,9 +70,32 @@ public class BloqueioModel {
         return new StringJoiner(", ", BloqueioModel.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("cartaoModel=" + cartao)
+                .add("estaBloqueado? " + bloqueado)
                 .add("bloqueadoEm=" + bloqueadoEm)
                 .add("ip='" + ip + "'")
                 .add("userAgent='" + userAgent + "'")
                 .toString();
+    }
+
+
+    /*SEM USO*/
+    public Long getId() {
+        return id;
+    }
+
+    public boolean isBloqueado() {
+        return bloqueado;
+    }
+
+    public LocalDateTime getBloqueadoEm() {
+        return bloqueadoEm;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
     }
 }

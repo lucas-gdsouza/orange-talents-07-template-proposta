@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.requests;
+package br.com.zupacademy.propostas.requests.internals;
 
 import br.com.zupacademy.propostas.customizations.annotations.CPFOrCNPJ;
 import br.com.zupacademy.propostas.customizations.annotations.UniqueElement;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
-public class NovaPropostaRequest {
+public class SolicitacaoAnaliseInternalRequest {
 
     @CPFOrCNPJ
     @NotBlank
@@ -29,9 +29,9 @@ public class NovaPropostaRequest {
     @PositiveOrZero
     private BigDecimal salarioBruto;
 
-    public NovaPropostaRequest(@NotBlank String documento, @NotBlank String email,
-                               @NotBlank String nome, @NotBlank String endereco,
-                               @NotNull @PositiveOrZero BigDecimal salarioBruto) {
+    public SolicitacaoAnaliseInternalRequest(@NotBlank String documento, @NotBlank String email,
+                                             @NotBlank String nome, @NotBlank String endereco,
+                                             @NotNull @PositiveOrZero BigDecimal salarioBruto) {
         this.documento = documento;
         this.email = email;
         this.nome = nome;

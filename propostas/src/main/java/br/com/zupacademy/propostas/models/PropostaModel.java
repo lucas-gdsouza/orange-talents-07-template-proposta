@@ -87,6 +87,7 @@ public class PropostaModel {
                 "Um valor positivo deve ser atribuído ao 'salarioBruto'");
     }
 
+
     public Long getId() {
         return id;
     }

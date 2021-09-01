@@ -11,8 +11,8 @@ import java.time.LocalDate;
 import java.util.StringJoiner;
 
 @Entity
-@Table(name = "AvisoDeViagem")
-public class AvisoDeViagemModel {
+@Table(name = "AvisoViagem")
+public class AvisoViagemModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,11 +46,11 @@ public class AvisoDeViagemModel {
      * Para uso do Hibernate
      */
     @Deprecated
-    public AvisoDeViagemModel() {
+    public AvisoViagemModel() {
     }
 
-    public AvisoDeViagemModel(@NotNull CartaoModel cartao, @NotBlank String destino, @NotNull LocalDate terminoEm,
-                              @NotBlank String ip, @NotBlank String userAgent) {
+    public AvisoViagemModel(@NotNull CartaoModel cartao, @NotBlank String destino, @NotNull LocalDate terminoEm,
+                            @NotBlank String ip, @NotBlank String userAgent) {
         validarAtributos(cartao, destino, terminoEm, ip, userAgent);
         this.cartao = cartao;
         this.destino = destino;
@@ -71,7 +71,7 @@ public class AvisoDeViagemModel {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", AvisoDeViagemModel.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", AvisoViagemModel.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("cartao=" + cartao)
                 .add("destino='" + destino + "'")

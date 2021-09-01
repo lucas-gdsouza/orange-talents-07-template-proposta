@@ -3,7 +3,7 @@ package br.com.zupacademy.propostas.resources;
 import br.com.zupacademy.propostas.customizations.binders.ValidarBiometria;
 import br.com.zupacademy.propostas.models.BiometriaModel;
 import br.com.zupacademy.propostas.repositories.CartaoRepository;
-import br.com.zupacademy.propostas.requests.NovaBiometriaRequest;
+import br.com.zupacademy.propostas.requests.internals.NovaBiometriaInternalRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
@@ -37,7 +37,7 @@ public class BiometriaResource {
     @PostMapping(value = "/{numeroCartao}")
     @Transactional
     public ResponseEntity cadastrarBiometria(@PathVariable("numeroCartao") String numeroCartao,
-                                             @RequestBody @Valid NovaBiometriaRequest request,
+                                             @RequestBody @Valid NovaBiometriaInternalRequest request,
                                              UriComponentsBuilder uriComponentsBuilder) {
 
         BiometriaModel biometriaModel = request.toModel(cartaoRepository, numeroCartao);

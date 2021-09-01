@@ -1,6 +1,6 @@
-package br.com.zupacademy.propostas.requests;
+package br.com.zupacademy.propostas.requests.both;
 
-import br.com.zupacademy.propostas.models.AvisoDeViagemModel;
+import br.com.zupacademy.propostas.models.AvisoViagemModel;
 import br.com.zupacademy.propostas.models.CartaoModel;
 import br.com.zupacademy.propostas.repositories.CartaoRepository;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class AvisoDeViagemRequest {
+public class AvisoViagemRequest {
 
     @NotBlank
     private String destino;
@@ -24,7 +24,7 @@ public class AvisoDeViagemRequest {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate terminaEm;
 
-    public AvisoDeViagemRequest(@NotBlank String destino, @NotNull LocalDate terminaEm) {
+    public AvisoViagemRequest(@NotBlank String destino, @NotNull LocalDate terminaEm) {
         this.destino = destino;
         this.terminaEm = terminaEm;
     }
@@ -44,8 +44,8 @@ public class AvisoDeViagemRequest {
         }
     }
 
-    public AvisoDeViagemModel toModel(CartaoRepository cartaoRepository, String numeroCartao,
-                                      String ip, String userAgent) {
+    public AvisoViagemModel toModel(CartaoRepository cartaoRepository, String numeroCartao,
+                                    String ip, String userAgent) {
 
         validarParametros(numeroCartao, ip, userAgent);
 
@@ -55,6 +55,6 @@ public class AvisoDeViagemRequest {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado");
         }
 
-        return new AvisoDeViagemModel(cartao.get(), this.destino, this.terminaEm, ip, userAgent);
+        return new AvisoViagemModel(cartao.get(), this.destino, this.terminaEm, ip, userAgent);
     }
 }

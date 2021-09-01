@@ -1,6 +1,6 @@
 package br.com.zupacademy.propostas.resources.externals;
 
-import br.com.zupacademy.propostas.requests.SolicitacaoAnaliseRequest;
+import br.com.zupacademy.propostas.requests.externals.SolicitacaoAnaliseExternalRequest;
 import br.com.zupacademy.propostas.response.SolicitacaoAnaliseResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,5 +12,5 @@ import javax.validation.Valid;
 public interface SolicitacaoAnaliseExternalResource {
 
     @PostMapping(value = "/")
-    SolicitacaoAnaliseResponse enviarParaAnalise(@RequestBody @Valid SolicitacaoAnaliseRequest request);
+    SolicitacaoAnaliseResponse enviarParaAnalise(@RequestBody @Valid SolicitacaoAnaliseExternalRequest request);
 }

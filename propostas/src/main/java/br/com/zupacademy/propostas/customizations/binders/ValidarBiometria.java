@@ -1,6 +1,6 @@
 package br.com.zupacademy.propostas.customizations.binders;
 
-import br.com.zupacademy.propostas.requests.NovaBiometriaRequest;
+import br.com.zupacademy.propostas.requests.internals.NovaBiometriaInternalRequest;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ public class ValidarBiometria implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return NovaBiometriaRequest.class.isAssignableFrom(aClass);
+        return NovaBiometriaInternalRequest.class.isAssignableFrom(aClass);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class ValidarBiometria implements Validator {
             return;
         }
 
-        NovaBiometriaRequest request = (NovaBiometriaRequest) object;
+        NovaBiometriaInternalRequest request = (NovaBiometriaInternalRequest) object;
         String biometriaRecebida = request.getBiometria();
 
         if (!Base64.isBase64(biometriaRecebida)) {

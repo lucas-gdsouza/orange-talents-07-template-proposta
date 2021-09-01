@@ -1,4 +1,4 @@
-package br.com.zupacademy.propostas.requests;
+package br.com.zupacademy.propostas.requests.internals;
 
 import br.com.zupacademy.propostas.models.BloqueioModel;
 import br.com.zupacademy.propostas.models.CartaoModel;
