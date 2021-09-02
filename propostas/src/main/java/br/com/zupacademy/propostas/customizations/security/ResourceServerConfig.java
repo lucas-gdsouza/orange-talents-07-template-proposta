@@ -15,7 +15,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests(authorizeRequests ->
                 authorizeRequests
-                        .antMatchers(HttpMethod.GET, "/actuator/**").hasAuthority("SCOPE_escopo-proposta")
+                        .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/api/v1/propostas/**").hasAuthority("SCOPE_escopo-proposta")
                         .antMatchers(HttpMethod.POST, "/api/v1/avisos/**").hasAuthority("SCOPE_escopo-proposta")
                         .antMatchers(HttpMethod.POST, "/api/v1/biometrias/**").hasAuthority("SCOPE_escopo-proposta")
