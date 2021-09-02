@@ -8,7 +8,7 @@ public class BloqueioCartaoResponse {
     @JsonProperty(value = "resultado")
     private String resultado;
 
-    public BloqueioCartaoResponse(@JsonProperty("resultado") @NotBlank String resultado) {
+    public BloqueioCartaoResponse(@JsonProperty("resultado") String resultado) {
         this.resultado = resultado;
     }
 

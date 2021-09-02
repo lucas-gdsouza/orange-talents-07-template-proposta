@@ -37,7 +37,6 @@ public class BloqueioModel {
     @NotBlank
     private String userAgent;
 
-
     /**
      * Para uso do Hibernate
      */
@@ -75,27 +74,5 @@ public class BloqueioModel {
                 .add("ip='" + ip + "'")
                 .add("userAgent='" + userAgent + "'")
                 .toString();
-    }
-
-
-    /*SEM USO*/
-    public Long getId() {
-        return id;
-    }
-
-    public boolean isBloqueado() {
-        return bloqueado;
-    }
-
-    public LocalDateTime getBloqueadoEm() {
-        return bloqueadoEm;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public String getUserAgent() {
-        return userAgent;
     }
 }

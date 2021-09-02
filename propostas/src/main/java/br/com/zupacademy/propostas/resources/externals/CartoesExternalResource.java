@@ -1,9 +1,12 @@
 package br.com.zupacademy.propostas.resources.externals;
 
 import br.com.zupacademy.propostas.requests.both.AvisoViagemRequest;
+import br.com.zupacademy.propostas.requests.both.CarteiraDigitalRequest;
 import br.com.zupacademy.propostas.requests.externals.NovoCartaoExternalRequest;
 import br.com.zupacademy.propostas.requests.externals.BloqueioCartaoExternalRequest;
+import br.com.zupacademy.propostas.response.AvisoViagemResponse;
 import br.com.zupacademy.propostas.response.BloqueioCartaoResponse;
+import br.com.zupacademy.propostas.response.CarteiraDigitalResponse;
 import br.com.zupacademy.propostas.response.NovoCartaoResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +24,14 @@ public interface CartoesExternalResource {
 
     @PostMapping(value = "/{id}/bloqueios")
     BloqueioCartaoResponse solicitarBloqueioDeCartao
-            (@PathVariable("id") String numeroCartao, @RequestBody BloqueioCartaoExternalRequest bloqueioCartaoExternalRequest);
+            (@PathVariable("id") String numeroCartao,
+             @RequestBody BloqueioCartaoExternalRequest bloqueioCartaoExternalRequest);
 
     @PostMapping(value = "/{id}/avisos")
-    void enviarAvisoDeViagem(@PathVariable("id") String numeroCartao,
-                                       @RequestBody AvisoViagemRequest avisoViagemRequest);
+    AvisoViagemResponse enviarAvisoDeViagem(@PathVariable("id") String numeroCartao,
+                                            @RequestBody AvisoViagemRequest avisoViagemRequest);
+
+    @PostMapping(value = "/{id}/carteiras")
+    CarteiraDigitalResponse associarCartaoAEmissor(@PathVariable("id") String numeroCartao,
+                                                   @RequestBody CarteiraDigitalRequest carteiraDigitalRequest);
 }

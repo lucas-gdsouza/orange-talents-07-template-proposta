@@ -37,6 +37,9 @@ public class CartaoModel {
     @OneToMany(mappedBy = "cartao")
     private List<AvisoViagemModel> avisos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "cartao")
+    private List<CarteiraDigitalModel> carteiras = new ArrayList<>();
+
     /**
      * Para uso do Hibernate
      */

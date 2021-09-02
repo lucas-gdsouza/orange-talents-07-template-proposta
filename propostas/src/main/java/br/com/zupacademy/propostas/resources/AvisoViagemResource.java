@@ -5,6 +5,7 @@ import br.com.zupacademy.propostas.repositories.AvisoViagemRepository;
 import br.com.zupacademy.propostas.repositories.CartaoRepository;
 import br.com.zupacademy.propostas.requests.both.AvisoViagemRequest;
 import br.com.zupacademy.propostas.resources.externals.CartoesExternalResource;
+import br.com.zupacademy.propostas.response.AvisoViagemResponse;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,9 +38,12 @@ public class AvisoViagemResource {
                 avisoViagemRequest.toModel(cartaoRepository, numeroCartao, ip, userAgent);
 
         try {
-            cartoesExternalResource.enviarAvisoDeViagem(numeroCartao, avisoViagemRequest);
-            avisoViagemRepository.save(avisoDeViagemModel);
+            AvisoViagemResponse avisoViagemResponse =
+                    cartoesExternalResource.enviarAvisoDeViagem(numeroCartao, avisoViagemRequest);
 
+            if (avisoViagemResponse.getResultado().equalsIgnoreCase("CRIADO")) {
+                avisoViagemRepository.save(avisoDeViagemModel);
+            }
         } catch (FeignException exception) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
                     "Erro ao tentar comunicar com API externa");
