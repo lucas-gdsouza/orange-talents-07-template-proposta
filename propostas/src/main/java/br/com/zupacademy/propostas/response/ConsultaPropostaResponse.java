@@ -15,7 +15,7 @@ public class ConsultaPropostaResponse {
     private EstadoProposta estadoProposta;
 
     public ConsultaPropostaResponse(PropostaModel propostaModel) {
-        this.documento = propostaModel.getDocumento();
+        this.documento = propostaModel.descriptografarDocumento();
         this.email = propostaModel.getEmail();
         this.nome = propostaModel.getNome();
         this.endereco = propostaModel.getEndereco();

@@ -30,11 +30,11 @@ public class ValidarCPFOuCNPJ implements Validator {
             return;
         }
 
-        SolicitacaoAnaliseInternalRequest request = (SolicitacaoAnaliseInternalRequest) object;
-        Optional<PropostaModel> possivelDocumento = propostaRepository.findByDocumento(request.getDocumento());
+       SolicitacaoAnaliseInternalRequest request = (SolicitacaoAnaliseInternalRequest) object;
+       Optional<PropostaModel> possivelDocumento = propostaRepository.findByDocumentoUnico(request.getDocumento());
 
-        if (possivelDocumento.isPresent()) {
+       if (possivelDocumento.isPresent()) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "O documento já está cadastrado.");
-        }
+       }
     }
 }

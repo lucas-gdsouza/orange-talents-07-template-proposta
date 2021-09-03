@@ -32,7 +32,7 @@ public class PropostaResource {
     @Autowired
     private SolicitacaoAnaliseExternalResource solicitacaoAnaliseExternalResource;
 
-    @Autowired
+   @Autowired
     private ValidarCPFOuCNPJ validarCPFOuCNPJ;
 
     @InitBinder

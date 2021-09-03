@@ -2,6 +2,7 @@ package br.com.zupacademy.propostas.requests.internals;
 
 import br.com.zupacademy.propostas.customizations.annotations.CPFOrCNPJ;
 import br.com.zupacademy.propostas.customizations.annotations.UniqueElement;
+import br.com.zupacademy.propostas.customizations.security.JasyptConfig;
 import br.com.zupacademy.propostas.models.PropostaModel;
 
 import javax.validation.constraints.NotBlank;
@@ -40,7 +41,7 @@ public class SolicitacaoAnaliseInternalRequest {
     }
 
     public String getDocumento() {
-        return documento;
+        return new JasyptConfig().gerarHash(documento);
     }
 
     public @NotNull PropostaModel toModel() {

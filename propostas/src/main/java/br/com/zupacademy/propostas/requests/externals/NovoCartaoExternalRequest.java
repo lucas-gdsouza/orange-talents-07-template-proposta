@@ -21,7 +21,7 @@ public class NovoCartaoExternalRequest {
 
     public NovoCartaoExternalRequest(@NotNull PropostaModel propostaModel) {
         this.idProposta = propostaModel.getId();
-        this.documento = propostaModel.getDocumento();
+        this.documento = propostaModel.descriptografarDocumento();
         this.nome = propostaModel.getNome();
     }
 

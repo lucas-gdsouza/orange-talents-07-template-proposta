@@ -1,11 +1,14 @@
 package br.com.zupacademy.propostas.models;
 
+import br.com.zupacademy.propostas.customizations.security.JasyptConfig;
 import br.com.zupacademy.propostas.models.enums.EstadoProposta;
 import br.com.zupacademy.propostas.response.NovoCartaoResponse;
 import br.com.zupacademy.propostas.response.SolicitacaoAnaliseResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -27,7 +30,11 @@ public class PropostaModel {
 
     @Column(unique = true)
     @NotBlank
-    private String documento;
+    private String documentoUnico;
+
+    @Column(unique = true)
+    @NotBlank
+    private String documentoLegivel;
 
     @Column(unique = true)
     @Email
@@ -55,6 +62,9 @@ public class PropostaModel {
     @OneToOne(cascade = CascadeType.ALL)
     private CartaoModel cartao;
 
+    @Transient
+    private String documentoLimpo;
+
     /**
      * Para uso do Hibernate
      */
@@ -62,11 +72,13 @@ public class PropostaModel {
     public PropostaModel() {
     }
 
-    public PropostaModel(@NotBlank String documento, @NotBlank String email, @NotBlank String nome,
+    public PropostaModel(@NotBlank String documentoLimpo, @NotBlank String email, @NotBlank String nome,
                          @NotBlank String endereco, @NotNull BigDecimal salarioBruto) {
-        validarAtributos(documento, email, nome, endereco, salarioBruto);
+        validarAtributos(documentoLimpo, email, nome, endereco, salarioBruto);
 
-        this.documento = documento;
+        this.documentoLimpo = documentoLimpo;
+        this.documentoLegivel = criptografarDocumento();
+        this.documentoUnico = hashearDocumento();
         this.email = email;
         this.nome = nome;
         this.endereco = endereco;
@@ -92,8 +104,12 @@ public class PropostaModel {
         return id;
     }
 
-    public String getDocumento() {
-        return documento;
+    public String getDocumentoUnico() {
+        return documentoUnico;
+    }
+
+    public String getDocumentoLegivel() {
+        return documentoLegivel;
     }
 
     public String getEmail() {
@@ -126,16 +142,29 @@ public class PropostaModel {
         this.estadoProposta = response.getResultadoSolicitacao();
     }
 
+    private String hashearDocumento() {
+        return new JasyptConfig().gerarHash(this.documentoLimpo);
+    }
+
+    private String criptografarDocumento() {
+        return new JasyptConfig().criptografar(this.documentoLimpo);
+    }
+
+    public String descriptografarDocumento() {
+        return new JasyptConfig().descriptografar(this.documentoLegivel);
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", PropostaModel.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
-                .add("documento='" + documento + "'")
+                .add("documentoUnico='" + documentoUnico + "'")
+                .add("documentoLegivel='" + documentoLegivel + "'")
                 .add("email='" + email + "'")
                 .add("nome='" + nome + "'")
                 .add("endereco='" + endereco + "'")
                 .add("salarioBruto=" + salarioBruto)
-                .add("estadoProposta='" + estadoProposta + "'")
+                .add("estadoProposta=" + estadoProposta)
                 .toString();
     }
 }
