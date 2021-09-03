@@ -60,6 +60,7 @@ public class BloqueioResource {
 
             bloqueioModel.estadoDoCartao(bloqueioCartaoResponse);
             manager.persist(bloqueioModel);
+            manager.flush();
 
             return ResponseEntity.ok().build();
 

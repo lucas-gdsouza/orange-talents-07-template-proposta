@@ -34,8 +34,8 @@ public class CartaoModel {
     @OneToOne(mappedBy = "cartao")
     private PropostaModel proposta;
 
-    @OneToOne(mappedBy = "cartao")
-    private BiometriaModel biometria;
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
+    private List<BiometriaModel> biometrias = new ArrayList<>();
 
     @OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
     private List<BloqueioModel> bloqueios = new ArrayList<>();
@@ -70,10 +70,6 @@ public class CartaoModel {
 
     public List<BloqueioModel> getBloqueios() {
         return bloqueios;
-    }
-
-    public List<AvisoViagemModel> getAvisos() {
-        return avisos;
     }
 
     public List<CarteiraDigitalModel> getCarteiras() {
