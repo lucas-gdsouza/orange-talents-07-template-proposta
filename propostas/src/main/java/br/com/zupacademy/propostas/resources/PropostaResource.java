@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -45,21 +44,9 @@ public class PropostaResource {
     public ResponseEntity solicitarProposta(@RequestBody @Valid SolicitacaoAnaliseInternalRequest solicitacaoAnaliseInternalRequest,
                                             UriComponentsBuilder uriComponentsBuilder) {
 
-        PropostaModel proposta = cadastrarPropostaEmSistemaInterno(solicitacaoAnaliseInternalRequest);
-        enviarPropostaParaAnaliseEmSistemaExterno(proposta);
-
-        URI uri = uriComponentsBuilder.path("/api/v1/propostas/{id}").buildAndExpand(proposta.getId()).toUri();
-        return ResponseEntity.created(uri).build();
-    }
-
-    private PropostaModel cadastrarPropostaEmSistemaInterno(SolicitacaoAnaliseInternalRequest
-                                                                    solicitacaoAnaliseInternalRequest) {
         PropostaModel proposta = solicitacaoAnaliseInternalRequest.toModel();
         propostaRepository.save(proposta);
-        return proposta;
-    }
 
-    private void enviarPropostaParaAnaliseEmSistemaExterno(PropostaModel proposta) {
         try {
             SolicitacaoAnaliseExternalRequest propostaASerAnalisada = new SolicitacaoAnaliseExternalRequest(proposta);
 
@@ -70,9 +57,11 @@ public class PropostaResource {
 
             propostaRepository.save(proposta);
 
+            URI uri = uriComponentsBuilder.path("/api/v1/propostas/{id}").buildAndExpand(proposta.getId()).toUri();
+            return ResponseEntity.created(uri).build();
+
         } catch (FeignException exception) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
-                    "Erro ao tentar comunicar com API externa");
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Erro em API Propostas");
         }
     }
 

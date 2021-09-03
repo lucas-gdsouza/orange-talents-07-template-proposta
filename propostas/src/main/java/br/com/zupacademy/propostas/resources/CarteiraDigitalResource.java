@@ -1,59 +1,71 @@
 package br.com.zupacademy.propostas.resources;
 
+import br.com.zupacademy.propostas.models.CartaoModel;
 import br.com.zupacademy.propostas.models.CarteiraDigitalModel;
 import br.com.zupacademy.propostas.repositories.CartaoRepository;
-import br.com.zupacademy.propostas.repositories.CarteiraDigitalRepository;
 import br.com.zupacademy.propostas.requests.both.CarteiraDigitalRequest;
 import br.com.zupacademy.propostas.resources.externals.CartoesExternalResource;
 import br.com.zupacademy.propostas.response.CarteiraDigitalResponse;
 import feign.FeignException;
-import feign.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/carteiras")
 public class CarteiraDigitalResource {
 
     @Autowired
-    private CarteiraDigitalRepository carteiraDigitalRepository;
-
-    @Autowired
     private CartaoRepository cartaoRepository;
 
     @Autowired
-    private CartoesExternalResource cartoesExternalResource;
+    private CartoesExternalResource apiCartoes;
+
+    @PersistenceContext
+    private EntityManager manager;
 
     @PostMapping(value = "/{numeroCartao}/cartoes")
+    @Transactional
     public ResponseEntity cadastrarEmissor(@PathVariable String numeroCartao,
                                            @RequestBody @Valid CarteiraDigitalRequest carteiraDigitalRequest,
                                            UriComponentsBuilder uriComponentsBuilder) {
 
-        CarteiraDigitalModel carteiraDigitalModel =
-                carteiraDigitalRequest.toModel(cartaoRepository, carteiraDigitalRepository, numeroCartao);
+        Optional<CartaoModel> cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
+
+        if (cartao.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (cartao.get().getCarteiras().size() > 0) {
+            return ResponseEntity.unprocessableEntity().body("O cartão já tem uma carteira associada.");
+        }
+
+        CarteiraDigitalModel carteiraDigitalModel = carteiraDigitalRequest.toModel(cartao.get());
 
         try {
             CarteiraDigitalResponse carteiraDigitalResponse =
-                    cartoesExternalResource.associarCartaoAEmissor(numeroCartao, carteiraDigitalRequest);
+                    apiCartoes.associarCartaoAEmissor(numeroCartao, carteiraDigitalRequest);
 
             if (carteiraDigitalResponse.getResultado().equalsIgnoreCase("ASSOCIADA")) {
-                carteiraDigitalRepository.save(carteiraDigitalModel);
+                manager.persist(carteiraDigitalModel);
             }
+
+            URI uri = uriComponentsBuilder.path("/api/v1/carteiras/{id}").
+                    buildAndExpand(carteiraDigitalModel.getId()).toUri();
+
+            return ResponseEntity.created(uri).build();
+
         } catch (FeignException exception) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
-                    "Erro ao tentar comunicar com API externa");
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Erro em API Cartões");
         }
-
-        URI uri = uriComponentsBuilder.path("/api/v1/propostas/{id}").
-                buildAndExpand(carteiraDigitalModel.getId()).toUri();
-
-        return ResponseEntity.created(uri).build();
     }
 }

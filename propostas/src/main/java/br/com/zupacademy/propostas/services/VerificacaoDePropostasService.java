@@ -26,7 +26,7 @@ public class VerificacaoDePropostasService {
      * A primeira unidade representa a quantidade de minutos;
      */
 
-    private final long time = 1 * 60 * 1000;
+    private final long time = 1 * 05 * 1000;
 
     private final Logger logger = LoggerFactory.getLogger(VerificacaoDePropostasService.class);
 
@@ -65,7 +65,7 @@ public class VerificacaoDePropostasService {
 
             } catch (FeignException exception) {
                 throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
-                        "Erro ao tentar comunicar com API externa");
+                        "Erro ao tentar comunicar com API Cartões");
             }
         });
     }

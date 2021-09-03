@@ -2,7 +2,6 @@ package br.com.zupacademy.propostas.requests.both;
 
 import br.com.zupacademy.propostas.models.AvisoViagemModel;
 import br.com.zupacademy.propostas.models.CartaoModel;
-import br.com.zupacademy.propostas.repositories.CartaoRepository;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.http.conn.util.InetAddressUtils;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,6 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Optional;
 
 public class AvisoViagemRequest {
 
@@ -44,17 +42,8 @@ public class AvisoViagemRequest {
         }
     }
 
-    public AvisoViagemModel toModel(CartaoRepository cartaoRepository, String numeroCartao,
-                                    String ip, String userAgent) {
-
+    public AvisoViagemModel toModel(CartaoModel cartao, String numeroCartao, String ip, String userAgent) {
         validarParametros(numeroCartao, ip, userAgent);
-
-        Optional<CartaoModel> cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
-
-        if (cartao.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado");
-        }
-
-        return new AvisoViagemModel(cartao.get(), this.destino, this.terminaEm, ip, userAgent);
+        return new AvisoViagemModel(cartao, this.destino, this.terminaEm, ip, userAgent);
     }
 }

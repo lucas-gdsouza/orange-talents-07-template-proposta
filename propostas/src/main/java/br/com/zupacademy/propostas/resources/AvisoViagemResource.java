@@ -1,7 +1,7 @@
 package br.com.zupacademy.propostas.resources;
 
 import br.com.zupacademy.propostas.models.AvisoViagemModel;
-import br.com.zupacademy.propostas.repositories.AvisoViagemRepository;
+import br.com.zupacademy.propostas.models.CartaoModel;
 import br.com.zupacademy.propostas.repositories.CartaoRepository;
 import br.com.zupacademy.propostas.requests.both.AvisoViagemRequest;
 import br.com.zupacademy.propostas.resources.externals.CartoesExternalResource;
@@ -13,42 +13,51 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/avisos")
 public class AvisoViagemResource {
 
     @Autowired
-    private CartoesExternalResource cartoesExternalResource;
-
-    @Autowired
-    private AvisoViagemRepository avisoViagemRepository;
+    private CartoesExternalResource apiCartoes;
 
     @Autowired
     private CartaoRepository cartaoRepository;
 
+    @PersistenceContext
+    private EntityManager manager;
+
     @PostMapping(value = "/{numeroCartao}/cartoes")
+    @Transactional
     public ResponseEntity emitirAvisoViagem(@PathVariable String numeroCartao,
                                             @RequestHeader(value = "ip") String ip,
                                             @RequestHeader(value = "User-Agent") String userAgent,
-                                            @RequestBody @Valid AvisoViagemRequest avisoViagemRequest) {
+                                            @RequestBody @Valid AvisoViagemRequest request) {
 
-        AvisoViagemModel avisoDeViagemModel =
-                avisoViagemRequest.toModel(cartaoRepository, numeroCartao, ip, userAgent);
+        Optional<CartaoModel> cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
 
-        try {
-            AvisoViagemResponse avisoViagemResponse =
-                    cartoesExternalResource.enviarAvisoDeViagem(numeroCartao, avisoViagemRequest);
-
-            if (avisoViagemResponse.getResultado().equalsIgnoreCase("CRIADO")) {
-                avisoViagemRepository.save(avisoDeViagemModel);
-            }
-        } catch (FeignException exception) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,
-                    "Erro ao tentar comunicar com API externa");
+        if (cartao.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().build();
+        AvisoViagemModel avisoDeViagemModel = request.toModel(cartao.get(), numeroCartao, ip, userAgent);
+
+        try {
+            AvisoViagemResponse response = apiCartoes.enviarAvisoDeViagem(numeroCartao, request);
+
+            if (response.getResultado().equalsIgnoreCase("CRIADO")) {
+                manager.persist(avisoDeViagemModel);
+            }
+
+            return ResponseEntity.ok(response.getResultado());
+
+        } catch (FeignException exception) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Erro em API Cartões");
+        }
     }
 }

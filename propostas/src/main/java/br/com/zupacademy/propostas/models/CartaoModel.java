@@ -31,13 +31,19 @@ public class CartaoModel {
     @NotBlank
     private String titular;
 
-    @OneToMany(mappedBy = "cartao")
+    @OneToOne(mappedBy = "cartao")
+    private PropostaModel proposta;
+
+    @OneToOne(mappedBy = "cartao")
+    private BiometriaModel biometria;
+
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
     private List<BloqueioModel> bloqueios = new ArrayList<>();
 
-    @OneToMany(mappedBy = "cartao")
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
     private List<AvisoViagemModel> avisos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "cartao")
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
     private List<CarteiraDigitalModel> carteiras = new ArrayList<>();
 
     /**
@@ -51,7 +57,6 @@ public class CartaoModel {
                        @NotBlank String titular) {
 
         validarAtributos(numeroCartao, emitidoEm, titular);
-
         this.numeroCartao = numeroCartao;
         this.emitidoEm = emitidoEm;
         this.titular = titular;
@@ -61,6 +66,18 @@ public class CartaoModel {
         Assert.hasText(numeroCartao, "O atributo 'numeroCartao' deve ser preenchido.");
         Assert.notNull(emitidoEm, "O atributo 'emitidoEm' não possui valor definido.");
         Assert.hasText(titular, "O atributo 'titular' deve ser preenchido.");
+    }
+
+    public List<BloqueioModel> getBloqueios() {
+        return bloqueios;
+    }
+
+    public List<AvisoViagemModel> getAvisos() {
+        return avisos;
+    }
+
+    public List<CarteiraDigitalModel> getCarteiras() {
+        return carteiras;
     }
 
     @Override
